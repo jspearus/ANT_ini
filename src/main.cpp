@@ -8,7 +8,7 @@ PWMServo grip; // create servo object to control a servo
 // twelve servo objects can be created on most boards
 
 UltraSonicDistanceSensor distanceSensor(9, 10); // trig, echo
-//setup ultrasonic sensor 
+// setup ultrasonic sensor
 
 Adafruit_PWMServoDriver pwmL = Adafruit_PWMServoDriver(0x41);
 Adafruit_PWMServoDriver pwmR = Adafruit_PWMServoDriver(0x40);
@@ -88,7 +88,7 @@ void loop()
   {
     if (dist < 15 && mode == 0)
     {
-      
+
       moveGrip(130);
       delay(2000);
       moveGrip(90);
@@ -119,27 +119,27 @@ void center()
 void home()
 {
   mode = 0;
-  moveGrip(110); // grip closed
-  // pwmL.writeMicroseconds(0, homeLval[0]); // head tilt min 1150 UP - max 1800 Down
-  // pwmL.writeMicroseconds(1, homeLval[1]); // head roll
-  // pwmR.writeMicroseconds(0, homeRval[0]); // Tail Pan
+  moveGrip(110);                          // grip closed
+  pwmL.writeMicroseconds(0, homeLval[0]); // head tilt min 1150 UP - max 1800 Down
+  pwmL.writeMicroseconds(1, homeLval[1]); // head roll
+  pwmR.writeMicroseconds(0, homeRval[0]); // Tail Pan
   delay(50);
   for (int i = 4; i < 16; i = i + 4)
   {
-    // pwmL.writeMicroseconds(i, homeLval[i]);
-    // delay(100);
-    // pwmL.writeMicroseconds(i + 1, homeLval[i + 1]);
-    // delay(100);
-    // pwmL.writeMicroseconds(i + 2, homeLval[i + 2]);
-    // delay(100);
-    // pwmR.writeMicroseconds(i, homeRval[i]);
-    // delay(100);
-    // pwmR.writeMicroseconds(i + 1, homeRval[i + 1]);
-    // delay(100);
-    // pwmR.writeMicroseconds(i + 2, homeRval[i + 2]);
+    pwmL.writeMicroseconds(i, homeLval[i]);
+    delay(100);
+    pwmL.writeMicroseconds(i + 1, homeLval[i + 1]);
+    delay(100);
+    pwmL.writeMicroseconds(i + 2, homeLval[i + 2]);
+    delay(100);
+    pwmR.writeMicroseconds(i, homeRval[i]);
+    delay(100);
+    pwmR.writeMicroseconds(i + 1, homeRval[i + 1]);
+    delay(100);
+    pwmR.writeMicroseconds(i + 2, homeRval[i + 2]);
     delay(100);
   }
-  // pwmR.writeMicroseconds(0, 1600);
+  pwmR.writeMicroseconds(0, 1600);
   for (int i = 0; i < 16; i++)
   {
     curLval[i] = homeLval[i];
@@ -155,24 +155,24 @@ void stand()
   leftAnkleStep = (standLval[2] - curLval[6]) / 100;
   rightKneeStep = (standRval[1] - curRval[5]) / 100;
   rightAnkleStep = (standRval[2] - curRval[6]) / 100;
-  // pwmL.writeMicroseconds(0, 1500);
-  // pwmL.writeMicroseconds(1, 1500);
-  // pwmR.writeMicroseconds(0, 1500);
-  // for (int j = 0; j < 100; j++)
-  for (int j = 1; j < 100; j++)
+  pwmL.writeMicroseconds(0, 1500);
+  pwmL.writeMicroseconds(1, 1500);
+  pwmR.writeMicroseconds(0, 1500);
+
+  for (int j = 1; j < 101; j++)
   {
     for (int i = 1; i < 4; i++)
     {
-      curLval[(i * 4) + 1] = curLval[(i * 4) + 1] + (leftKneeStep);
-      curLval[(i * 4) + 2] = leftAnkleStep * j;
-      curRval[(i * 4) + 1] = rightKneeStep * j;
-      curRval[(i * 4) + 2] = rightAnkleStep * j;
+      curLval[(i * 4) + 1] = curLval[(i * 4) + 1] + leftKneeStep;
+      curLval[(i * 4) + 2] = curLval[(i * 4) + 2] + leftAnkleStep;
+      curRval[(i * 4) + 1] = curRval[(i * 4) + 1] + rightKneeStep;
+      curRval[(i * 4) + 2] = curRval[(i * 4) + 2] + rightAnkleStep;
 
-      // pwmL.writeMicroseconds((i * 4) + 1, curLval[(i * 4) + 1]);
-      // pwmL.writeMicroseconds((i * 4) + 2, curLval[(i * 4) + 2]);
+      pwmL.writeMicroseconds((i * 4) + 1, curLval[(i * 4) + 1]);
+      pwmL.writeMicroseconds((i * 4) + 2, curLval[(i * 4) + 2]);
 
-      // pwmR.writeMicroseconds((i * 4) + 1, curRval[(i * 4) + 1]);
-      // pwmR.writeMicroseconds((i * 4) + 2, curRval[(i * 4) + 2]);
+      pwmR.writeMicroseconds((i * 4) + 1, curRval[(i * 4) + 1]);
+      pwmR.writeMicroseconds((i * 4) + 2, curRval[(i * 4) + 2]);
     }
   }
   printCurPos();
@@ -209,7 +209,8 @@ void step_forward()
   delay(500);
 }
 
-void moveGrip(int pos){
+void moveGrip(int pos)
+{
   pos = constrain(pos, 80, 130);
   grip.write(pos);
 }
