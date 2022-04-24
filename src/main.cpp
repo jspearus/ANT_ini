@@ -38,11 +38,11 @@ String Data_In = "";
 int homeLval[] = {1300, 1300, 0, 0, 1500, 2400, 2400, 0, 1500, 2400, 2400, 0, 1500, 2400, 2400, 0};
 int homeRval[] = {1500, 0, 0, 0, 1500, 600, 600, 0, 1500, 600, 600, 0, 1500, 600, 600, 0};
 // Stand Servo Positions
-int standLval[] = {1300, 1300, 0, 0, 1500, 2400, 2400, 0, 1500, 2400, 2400, 0, 1500, 2400, 2400, 0};
-int standRval[] = {1500, 0, 0, 0, 1500, 600, 600, 0, 1500, 600, 600, 0, 1500, 600, 600, 0};
+int standLval[] = {1500, 1410, 1950};
+int standRval[] = {1500, 1590, 1050};
 // Sit Servo Positions
-int sitLval[] = {1300, 1300, 0, 0, 1500, 2400, 2400, 0, 1500, 2400, 2400, 0, 1500, 2400, 2400, 0};
-int sitRval[] = {1500, 0, 0, 0, 1500, 600, 600, 0, 1500, 600, 600, 0, 1500, 600, 600, 0};
+int sitLval[] = {1500, 2400, 2400};
+int sitRval[] = {1500, 600, 600};
 
 // Current Servo Postions
 int curLval[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
@@ -68,6 +68,7 @@ void setup()
   grip.write(130);
   delay(2000);
   grip.write(90);
+  home();
 }
 
 void loop()
@@ -109,6 +110,7 @@ void center()
 
 void home()
 {
+  mode = 0;
   grip.write(110);                        // grip closed
   pwmL.writeMicroseconds(0, homeLval[0]); // head tilt min 1150 UP - max 1800 Down
   pwmL.writeMicroseconds(1, homeLval[1]); // head roll
@@ -130,7 +132,20 @@ void home()
     delay(100);
   }
   pwmR.writeMicroseconds(0, 1600);
-  delay(500);
+  for (int i = 0; i < 16; i++)
+  {
+    curLval[i] = homeLval[i];
+    Serial.print(curLval[i]);
+    Serial.print(", ");
+  }
+  Serial.println("");
+  for (int i = 0; i < 16; i++)
+  {
+    curRval[i] = homeRval[i];
+    Serial.print(curRval[i]);
+    Serial.print(", ");
+  }
+  Serial.println("");
 }
 
 void stand()
@@ -143,16 +158,17 @@ void stand()
   pwmR.writeMicroseconds(0, 1500);
   for (int j = 0; j < 1000; j = j + 10)
   {
-    for (int i = 4; i < 16; i = i + 4)
+    for (int i = 1; i < 4; i++)
     {
-      pwmL.writeMicroseconds(i, 1500);
-      pwmL.writeMicroseconds(i + 1, LeftPos - j);
-      pwmL.writeMicroseconds(i + 2, LeftPos - (j / 2.2));
-      pwmR.writeMicroseconds(i, 1500);
-      pwmR.writeMicroseconds(i + 1, RightPos + j);
-      pwmR.writeMicroseconds(i + 2, RightPos + (j / 2.2));
+      pwmL.writeMicroseconds((i * 4), 1500);
+      pwmL.writeMicroseconds((i * 4) + 1, LeftPos - j);
+      pwmL.writeMicroseconds((i * 4) + 2, LeftPos - (j / 2.2));
+      pwmR.writeMicroseconds((i * 4), 1500);
+      pwmR.writeMicroseconds((i * 4) + 1, RightPos + j);
+      pwmR.writeMicroseconds((i * 4) + 2, RightPos + (j / 2.2));
     }
-    Serial.println(RightPos + (j / 2.2));
+    Serial.println(LeftPos - j);
+    Serial.println(RightPos + j);
   }
 }
 void sit()
@@ -165,16 +181,17 @@ void sit()
   pwmR.writeMicroseconds(0, 1500);
   for (int j = 1000; j > 0; j = j - 10)
   {
-    for (int i = 4; i < 16; i = i + 4)
+    for (int i = 1; i < 4; i++)
     {
-      pwmL.writeMicroseconds(i, 1500);
-      pwmL.writeMicroseconds(i + 1, LeftPos - j);
-      pwmL.writeMicroseconds(i + 2, LeftPos - (j / 2.2));
-      pwmR.writeMicroseconds(i, 1500);
-      pwmR.writeMicroseconds(i + 1, RightPos + j);
-      pwmR.writeMicroseconds(i + 2, RightPos + (j / 2.2));
+      pwmL.writeMicroseconds((i * 4), 1500);
+      pwmL.writeMicroseconds((i * 4) + 1, LeftPos - j);
+      pwmL.writeMicroseconds((i * 4) + 2, LeftPos - (j / 2.2));
+      pwmR.writeMicroseconds((i * 4), 1500);
+      pwmR.writeMicroseconds((i * 4) + 1, RightPos + j);
+      pwmR.writeMicroseconds((i * 4) + 2, RightPos + (j / 2.2));
     }
-    Serial.println(RightPos + (j / 2.2));
+    Serial.println(LeftPos - j);
+    Serial.println(RightPos + j);
   }
 }
 
