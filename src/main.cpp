@@ -163,7 +163,7 @@ void stand()
   {
     for (int i = 1; i < 4; i++)
     {
-      curLval[(i * 4) + 1] = curLval[(i * 4) + 1] + (leftKneeStep * j);
+      curLval[(i * 4) + 1] = curLval[(i * 4) + 1] + (leftKneeStep);
       curLval[(i * 4) + 2] = leftAnkleStep * j;
       curRval[(i * 4) + 1] = rightKneeStep * j;
       curRval[(i * 4) + 2] = rightAnkleStep * j;
