@@ -7,8 +7,9 @@
 PWMServo grip; // create servo object to control a servo
 // twelve servo objects can be created on most boards
 
-UltraSonicDistanceSensor distanceSensor(9, 10); // trig, echo?
-// called this way, it uses the default address 0x40
+UltraSonicDistanceSensor distanceSensor(9, 10); // trig, echo
+//setup ultrasonic sensor 
+
 Adafruit_PWMServoDriver pwmL = Adafruit_PWMServoDriver(0x41);
 Adafruit_PWMServoDriver pwmR = Adafruit_PWMServoDriver(0x40);
 // you can also call it with a different address you want
@@ -26,6 +27,7 @@ void stand();
 void sit();
 void step_forward();
 
+void moveGrip(int pos);
 void moveLegLeftFront(int pos);
 
 void printCurPos();
@@ -68,35 +70,36 @@ void setup()
   pwmR.setPWMFreq(SERVO_FREQ); // Analog servos run at ~50 Hz updates
 
   grip.attach(8);
-  grip.write(80);
+  moveGrip(80);
   delay(200);
-  grip.write(130);
+  moveGrip(130);
   delay(2000);
-  grip.write(90);
+  moveGrip(90);
   home();
 }
 
 void loop()
 {
-  // grip.write(80); // grip open
-  // grip.write(130); // grip closed
+  // moveGrip(80); // grip open
+  // moveGrip(130); // grip closed
   dist = distanceSensor.measureDistanceCm();
   delay(50);
   if (dist > 0)
   {
     if (dist < 15 && mode == 0)
     {
-      grip.write(130);
+      
+      moveGrip(130);
       delay(2000);
-      grip.write(90);
+      moveGrip(90);
       stand();
     }
     else if (dist < 15 && mode == 1)
     {
       step_forward();
-      grip.write(130);
+      moveGrip(130);
       delay(2000);
-      grip.write(90);
+      moveGrip(90);
       sit();
     }
   }
@@ -116,7 +119,7 @@ void center()
 void home()
 {
   mode = 0;
-  grip.write(110); // grip closed
+  moveGrip(110); // grip closed
   // pwmL.writeMicroseconds(0, homeLval[0]); // head tilt min 1150 UP - max 1800 Down
   // pwmL.writeMicroseconds(1, homeLval[1]); // head roll
   // pwmR.writeMicroseconds(0, homeRval[0]); // Tail Pan
@@ -179,9 +182,9 @@ void sit()
   mode = 0;
   int LeftPos = 2400;
   int RightPos = 600;
-  pwmL.writeMicroseconds(0, 1500);
-  pwmL.writeMicroseconds(1, 1500);
-  pwmR.writeMicroseconds(0, 1500);
+  // pwmL.writeMicroseconds(0, 1500);
+  // pwmL.writeMicroseconds(1, 1500);
+  // pwmR.writeMicroseconds(0, 1500);
   for (int j = 1000; j > 0; j = j - 10)
   {
     for (int i = 1; i < 4; i++)
@@ -191,11 +194,11 @@ void sit()
       curRval[(i * 4) + 1] = RightPos + j;
       curRval[(i * 4) + 2] = RightPos + (j / 2.2);
 
-      pwmL.writeMicroseconds((i * 4) + 1, curLval[(i * 4) + 1]);
-      pwmL.writeMicroseconds((i * 4) + 2, curLval[(i * 4) + 2]);
+      // pwmL.writeMicroseconds((i * 4) + 1, curLval[(i * 4) + 1]);
+      // pwmL.writeMicroseconds((i * 4) + 2, curLval[(i * 4) + 2]);
 
-      pwmR.writeMicroseconds((i * 4) + 1, curRval[(i * 4) + 1]);
-      pwmR.writeMicroseconds((i * 4) + 2, curRval[(i * 4) + 2]);
+      // pwmR.writeMicroseconds((i * 4) + 1, curRval[(i * 4) + 1]);
+      // pwmR.writeMicroseconds((i * 4) + 2, curRval[(i * 4) + 2]);
     }
   }
   printCurPos();
@@ -204,6 +207,11 @@ void sit()
 void step_forward()
 {
   delay(500);
+}
+
+void moveGrip(int pos){
+  pos = constrain(pos, 80, 130);
+  grip.write(pos);
 }
 
 void moveLegLeftFront(int pos)
