@@ -28,10 +28,15 @@ void step_forward();
 
 void moveLegLeftFront(int pos);
 
+void printCurPos();
 void serialEvent();
 
 float dist = 0;
 int mode = 0;
+int leftKneeStep = 2400;
+int rightKneeStep = 600;
+int leftAnkleStep = 2400;
+int rightAnkleStep = 600;
 String Data_In = "";
 
 // Home Servo Positions
@@ -135,17 +140,9 @@ void home()
   for (int i = 0; i < 16; i++)
   {
     curLval[i] = homeLval[i];
-    Serial.print(curLval[i]);
-    Serial.print(", ");
-  }
-  Serial.println("");
-  for (int i = 0; i < 16; i++)
-  {
     curRval[i] = homeRval[i];
-    Serial.print(curRval[i]);
-    Serial.print(", ");
   }
-  Serial.println("");
+  printCurPos();
 }
 
 void stand()
@@ -156,20 +153,24 @@ void stand()
   pwmL.writeMicroseconds(0, 1500);
   pwmL.writeMicroseconds(1, 1500);
   pwmR.writeMicroseconds(0, 1500);
+  // for (int j = 0; j < 100; j++)
   for (int j = 0; j < 1000; j = j + 10)
   {
     for (int i = 1; i < 4; i++)
     {
-      pwmL.writeMicroseconds((i * 4), 1500);
-      pwmL.writeMicroseconds((i * 4) + 1, LeftPos - j);
-      pwmL.writeMicroseconds((i * 4) + 2, LeftPos - (j / 2.2));
-      pwmR.writeMicroseconds((i * 4), 1500);
-      pwmR.writeMicroseconds((i * 4) + 1, RightPos + j);
-      pwmR.writeMicroseconds((i * 4) + 2, RightPos + (j / 2.2));
+      curLval[(i * 4) + 1] = LeftPos - j;
+      curLval[(i * 4) + 2] = LeftPos - (j / 2.2);
+      curRval[(i * 4) + 1] = RightPos + j;
+      curRval[(i * 4) + 2] = RightPos + (j / 2.2);
+
+      pwmL.writeMicroseconds((i * 4) + 1, curLval[(i * 4) + 1]);
+      pwmL.writeMicroseconds((i * 4) + 2, curLval[(i * 4) + 2]);
+
+      pwmR.writeMicroseconds((i * 4) + 1, curRval[(i * 4) + 1]);
+      pwmR.writeMicroseconds((i * 4) + 2, curRval[(i * 4) + 2]);
     }
-    Serial.println(LeftPos - j);
-    Serial.println(RightPos + j);
   }
+  printCurPos();
 }
 void sit()
 {
@@ -183,16 +184,19 @@ void sit()
   {
     for (int i = 1; i < 4; i++)
     {
-      pwmL.writeMicroseconds((i * 4), 1500);
-      pwmL.writeMicroseconds((i * 4) + 1, LeftPos - j);
-      pwmL.writeMicroseconds((i * 4) + 2, LeftPos - (j / 2.2));
-      pwmR.writeMicroseconds((i * 4), 1500);
-      pwmR.writeMicroseconds((i * 4) + 1, RightPos + j);
-      pwmR.writeMicroseconds((i * 4) + 2, RightPos + (j / 2.2));
+      curLval[(i * 4) + 1] = LeftPos - j;
+      curLval[(i * 4) + 2] = LeftPos - (j / 2.2);
+      curRval[(i * 4) + 1] = RightPos + j;
+      curRval[(i * 4) + 2] = RightPos + (j / 2.2);
+
+      pwmL.writeMicroseconds((i * 4) + 1, curLval[(i * 4) + 1]);
+      pwmL.writeMicroseconds((i * 4) + 2, curLval[(i * 4) + 2]);
+
+      pwmR.writeMicroseconds((i * 4) + 1, curRval[(i * 4) + 1]);
+      pwmR.writeMicroseconds((i * 4) + 2, curRval[(i * 4) + 2]);
     }
-    Serial.println(LeftPos - j);
-    Serial.println(RightPos + j);
   }
+  printCurPos();
 }
 
 void step_forward()
@@ -202,6 +206,23 @@ void step_forward()
 
 void moveLegLeftFront(int pos)
 {
+}
+
+void printCurPos()
+{
+  for (int i = 0; i < 16; i++)
+  {
+    Serial.print(curLval[i]);
+    Serial.print(", ");
+  }
+  Serial.println("");
+  for (int i = 0; i < 16; i++)
+  {
+
+    Serial.print(curRval[i]);
+    Serial.print(", ");
+  }
+  Serial.println("");
 }
 
 void serialEvent()
