@@ -16,11 +16,6 @@ Adafruit_PWMServoDriver pwmR = Adafruit_PWMServoDriver(0x40);
 // you can also call it with a different address and I2C interface
 // Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver(0x40, Wire);
 
-// Depending on your servo make, the pulse width min and max may vary, you
-// want these to be as small/large as possible without hitting the hard stop
-// for max range. You'll have to tweak them as necessary to match the servos you
-// have!
-
 #define SERVO_FREQ 50 //
 
 // FUNCTOIN DECLARATIONS
@@ -30,6 +25,8 @@ void home();
 void stand();
 void sit();
 void step_forward();
+
+void moveLegLeftFront(int pos);
 
 void serialEvent();
 
@@ -41,6 +38,11 @@ String Data_In = "";
 int homeLval[] = {1300, 1300, 0, 0, 1500, 2400, 2400, 0, 1500, 2400, 2400, 0, 1500, 2400, 2400, 0};
 int homeRval[] = {1500, 0, 0, 0, 1500, 600, 600, 0, 1500, 600, 600, 0, 1500, 600, 600, 0};
 // Stand Servo Positions
+int standLval[] = {1300, 1300, 0, 0, 1500, 2400, 2400, 0, 1500, 2400, 2400, 0, 1500, 2400, 2400, 0};
+int standRval[] = {1500, 0, 0, 0, 1500, 600, 600, 0, 1500, 600, 600, 0, 1500, 600, 600, 0};
+// Sit Servo Positions
+int sitLval[] = {1300, 1300, 0, 0, 1500, 2400, 2400, 0, 1500, 2400, 2400, 0, 1500, 2400, 2400, 0};
+int sitRval[] = {1500, 0, 0, 0, 1500, 600, 600, 0, 1500, 600, 600, 0, 1500, 600, 600, 0};
 
 // Current Servo Postions
 int curLval[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
@@ -139,7 +141,7 @@ void stand()
   pwmL.writeMicroseconds(0, 1500);
   pwmL.writeMicroseconds(1, 1500);
   pwmR.writeMicroseconds(0, 1500);
-  for (int j = 0; j < 1000; j = j + 3)
+  for (int j = 0; j < 1000; j = j + 10)
   {
     for (int i = 4; i < 16; i = i + 4)
     {
@@ -161,7 +163,7 @@ void sit()
   pwmL.writeMicroseconds(0, 1500);
   pwmL.writeMicroseconds(1, 1500);
   pwmR.writeMicroseconds(0, 1500);
-  for (int j = 1000; j > 0; j = j - 3)
+  for (int j = 1000; j > 0; j = j - 10)
   {
     for (int i = 4; i < 16; i = i + 4)
     {
@@ -178,42 +180,11 @@ void sit()
 
 void step_forward()
 {
-  pwmL.writeMicroseconds(5, 1800);
-  pwmL.writeMicroseconds(6, 2245);
-  pwmL.writeMicroseconds(13, 1800);
-  pwmL.writeMicroseconds(14, 2245);
-  pwmR.writeMicroseconds(9, 1200);
-  pwmR.writeMicroseconds(10, 945);
   delay(500);
-  pwmL.writeMicroseconds(4, 1700);
-  pwmL.writeMicroseconds(12, 1700);
-  pwmR.writeMicroseconds(8, 1300);
-  delay(500);
-  pwmL.writeMicroseconds(5, 1400);
-  pwmL.writeMicroseconds(6, 1945);
-  pwmL.writeMicroseconds(13, 1400);
-  pwmL.writeMicroseconds(14, 1945);
-  pwmR.writeMicroseconds(9, 1600);
-  pwmR.writeMicroseconds(10, 1145);
-  delay(300);
-  pwmL.writeMicroseconds(9, 1800);
-  pwmL.writeMicroseconds(10, 2245);
-  pwmR.writeMicroseconds(5, 1200);
-  pwmR.writeMicroseconds(6, 945);
-  pwmR.writeMicroseconds(13, 1200);
-  pwmR.writeMicroseconds(14, 945);
-  delay(500);
-  pwmL.writeMicroseconds(4, 1500);
-  pwmL.writeMicroseconds(12, 1500);
-  pwmR.writeMicroseconds(8, 1500);
-  delay(500);
-  pwmL.writeMicroseconds(9, 1400);
-  pwmL.writeMicroseconds(10, 1945);
-  pwmR.writeMicroseconds(5, 1600);
-  pwmR.writeMicroseconds(6, 1145);
-  pwmR.writeMicroseconds(13, 1600);
-  pwmR.writeMicroseconds(14, 1145);
-  delay(500);
+}
+
+void moveLegLeftFront(int pos)
+{
 }
 
 void serialEvent()
