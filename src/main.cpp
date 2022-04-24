@@ -116,27 +116,27 @@ void center()
 void home()
 {
   mode = 0;
-  grip.write(110);                        // grip closed
-  pwmL.writeMicroseconds(0, homeLval[0]); // head tilt min 1150 UP - max 1800 Down
-  pwmL.writeMicroseconds(1, homeLval[1]); // head roll
-  pwmR.writeMicroseconds(0, homeRval[0]); // Tail Pan
+  grip.write(110); // grip closed
+  // pwmL.writeMicroseconds(0, homeLval[0]); // head tilt min 1150 UP - max 1800 Down
+  // pwmL.writeMicroseconds(1, homeLval[1]); // head roll
+  // pwmR.writeMicroseconds(0, homeRval[0]); // Tail Pan
   delay(50);
   for (int i = 4; i < 16; i = i + 4)
   {
-    pwmL.writeMicroseconds(i, homeLval[i]);
-    delay(100);
-    pwmL.writeMicroseconds(i + 1, homeLval[i + 1]);
-    delay(100);
-    pwmL.writeMicroseconds(i + 2, homeLval[i + 2]);
-    delay(100);
-    pwmR.writeMicroseconds(i, homeRval[i]);
-    delay(100);
-    pwmR.writeMicroseconds(i + 1, homeRval[i + 1]);
-    delay(100);
-    pwmR.writeMicroseconds(i + 2, homeRval[i + 2]);
+    // pwmL.writeMicroseconds(i, homeLval[i]);
+    // delay(100);
+    // pwmL.writeMicroseconds(i + 1, homeLval[i + 1]);
+    // delay(100);
+    // pwmL.writeMicroseconds(i + 2, homeLval[i + 2]);
+    // delay(100);
+    // pwmR.writeMicroseconds(i, homeRval[i]);
+    // delay(100);
+    // pwmR.writeMicroseconds(i + 1, homeRval[i + 1]);
+    // delay(100);
+    // pwmR.writeMicroseconds(i + 2, homeRval[i + 2]);
     delay(100);
   }
-  pwmR.writeMicroseconds(0, 1600);
+  // pwmR.writeMicroseconds(0, 1600);
   for (int i = 0; i < 16; i++)
   {
     curLval[i] = homeLval[i];
@@ -148,26 +148,28 @@ void home()
 void stand()
 {
   mode = 1;
-  int LeftPos = 2400;
-  int RightPos = 600;
-  pwmL.writeMicroseconds(0, 1500);
-  pwmL.writeMicroseconds(1, 1500);
-  pwmR.writeMicroseconds(0, 1500);
+  leftKneeStep = (standLval[1] - curLval[5]) / 100;
+  leftAnkleStep = (standLval[2] - curLval[6]) / 100;
+  rightKneeStep = (standRval[1] - curRval[5]) / 100;
+  rightAnkleStep = (standRval[2] - curRval[6]) / 100;
+  // pwmL.writeMicroseconds(0, 1500);
+  // pwmL.writeMicroseconds(1, 1500);
+  // pwmR.writeMicroseconds(0, 1500);
   // for (int j = 0; j < 100; j++)
-  for (int j = 0; j < 1000; j = j + 10)
+  for (int j = 1; j < 100; j++)
   {
     for (int i = 1; i < 4; i++)
     {
-      curLval[(i * 4) + 1] = LeftPos - j;
-      curLval[(i * 4) + 2] = LeftPos - (j / 2.2);
-      curRval[(i * 4) + 1] = RightPos + j;
-      curRval[(i * 4) + 2] = RightPos + (j / 2.2);
+      curLval[(i * 4) + 1] = curLval[(i * 4) + 1] + (leftKneeStep * j);
+      curLval[(i * 4) + 2] = leftAnkleStep * j;
+      curRval[(i * 4) + 1] = rightKneeStep * j;
+      curRval[(i * 4) + 2] = rightAnkleStep * j;
 
-      pwmL.writeMicroseconds((i * 4) + 1, curLval[(i * 4) + 1]);
-      pwmL.writeMicroseconds((i * 4) + 2, curLval[(i * 4) + 2]);
+      // pwmL.writeMicroseconds((i * 4) + 1, curLval[(i * 4) + 1]);
+      // pwmL.writeMicroseconds((i * 4) + 2, curLval[(i * 4) + 2]);
 
-      pwmR.writeMicroseconds((i * 4) + 1, curRval[(i * 4) + 1]);
-      pwmR.writeMicroseconds((i * 4) + 2, curRval[(i * 4) + 2]);
+      // pwmR.writeMicroseconds((i * 4) + 1, curRval[(i * 4) + 1]);
+      // pwmR.writeMicroseconds((i * 4) + 2, curRval[(i * 4) + 2]);
     }
   }
   printCurPos();
@@ -210,12 +212,14 @@ void moveLegLeftFront(int pos)
 
 void printCurPos()
 {
+  Serial.print("Left: ");
   for (int i = 0; i < 16; i++)
   {
     Serial.print(curLval[i]);
     Serial.print(", ");
   }
   Serial.println("");
+  Serial.print("Right: ");
   for (int i = 0; i < 16; i++)
   {
 
