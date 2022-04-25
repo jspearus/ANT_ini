@@ -28,8 +28,8 @@ void sit();
 void step_forward();
 
 void moveGrip(int pos);
-void moveLeftLeg(int leg, int pos, int steps);
-void moveRightLeg(int leg, int pos, int steps);
+void moveLeftLeg(int leg, int pos, int hieght, int steps);
+void moveRightLeg(int leg, int pos, int hieght, int steps);
 
 void printCurPos();
 void serialEvent();
@@ -163,7 +163,7 @@ void stand()
   for (int j = 1; j < 101; j++)
   {
     for (int i = 1; i < 4; i++)
-    {
+    { // move to standing position
       curLval[(i * 4) + 1] = curLval[(i * 4) + 1] + leftKneeStep;
       curLval[(i * 4) + 2] = curLval[(i * 4) + 2] + leftAnkleStep;
       curRval[(i * 4) + 1] = curRval[(i * 4) + 1] + rightKneeStep;
@@ -177,7 +177,7 @@ void stand()
     }
   }
   for (int i = 1; i < 4; i++)
-  {
+  { // lift each leg up and down one at a time
     pwmL.writeMicroseconds((i * 4) + 1, curLval[(i * 4) + 1] + 200);
     pwmL.writeMicroseconds((i * 4) + 2, curLval[(i * 4) + 2] + 100);
     delay(100);
@@ -196,7 +196,7 @@ void stand()
   printCurPos();
 }
 void sit()
-{
+{ // move to sitting position
   mode = 0;
   leftKneeStep = (sitLval[1] - curLval[5]) / 100;
   leftAnkleStep = (sitLval[2] - curLval[6]) / 100;
@@ -226,7 +226,38 @@ void sit()
 
 void step_forward()
 {
-  delay(500);
+  moveLeftLeg(1, 200, 200, 100);
+  moveRightLeg(1, 200, 200, 100);
+  moveLeftLeg(0, 200, 200, 100);
+  moveRightLeg(0, 200, 200, 100);
+  delay(100);
+  moveLeftLeg(0, -200, 0, 0);
+  moveRightLeg(0, -200, 0, 0);
+  moveLeftLeg(1, -200, 0, 0);
+  moveRightLeg(1, -200, 0, 0);
+  moveLeftLeg(2, -200, 0, 0);
+  moveRightLeg(2, -200, 0, 0);
+  delay(100);
+  moveLeftLeg(2, 200, 200, 100);
+  moveRightLeg(2, 200, 200, 100);
+}
+
+void step_backward()
+{
+  moveLeftLeg(1, -200, 200, 100);
+  moveRightLeg(1, -200, 200, 100);
+  moveLeftLeg(2, -200, 200, 100);
+  moveRightLeg(2, -200, 200, 100);
+  delay(100);
+  moveLeftLeg(0, 200, 0, 0);
+  moveRightLeg(0, 200, 0, 0);
+  moveLeftLeg(1, 200, 0, 0);
+  moveRightLeg(1, 200, 0, 0);
+  moveLeftLeg(2, 200, 0, 0);
+  moveRightLeg(2, 200, 0, 0);
+  delay(100);
+  moveLeftLeg(0, -200, 200, 100);
+  moveRightLeg(0, -200, 200, 100);
 }
 
 void moveGrip(int pos)
@@ -235,43 +266,41 @@ void moveGrip(int pos)
   grip.write(pos);
 }
 
-void moveLeftLeg(int leg, int pos, int steps)
+void moveLeftLeg(int leg, int pos, int hieght, int steps)
 {
   if (mode != 0)
   {
     int Leg[] = {4, 8, 12};
     int legS = Leg[leg];
+    curLval[legS] = curLval[legS] + pos;
     // for (int i = 1; i < (steps + 1); i++)
     // {
-    pwmL.writeMicroseconds(legS + 1, curLval[legS + 1] + 200);
-    pwmL.writeMicroseconds(legS + 2, curLval[legS + 2] + 100);
-    delay(100);
-    pwmL.writeMicroseconds(legS, curLval[legS] + pos);
-    delay(100);
+    pwmL.writeMicroseconds(legS + 1, curLval[legS + 1] + hieght);
+    pwmL.writeMicroseconds(legS + 2, curLval[legS + 2] + hieght);
+    delay(steps);
+    pwmL.writeMicroseconds(legS, curLval[legS]);
+    delay(steps);
     pwmL.writeMicroseconds(legS + 1, curLval[legS + 1]);
     pwmL.writeMicroseconds(legS + 2, curLval[legS + 2]);
-    delay(100);
-    pwmL.writeMicroseconds(legS, curLval[legS]);
     // }
   }
 }
-void moveRightLeg(int leg, int pos, int steps)
+void moveRightLeg(int leg, int pos, int hieght, int steps)
 {
   if (mode != 0)
   {
     int Leg[] = {12, 8, 4};
     int legS = Leg[leg];
+    curRval[legS] = curRval[legS] - pos;
     // for (int i = 1; i < (steps + 1); i++)
     // {
-    pwmR.writeMicroseconds(legS + 1, curRval[legS + 1] - 200);
-    pwmR.writeMicroseconds(legS + 2, curRval[legS + 2] - 100);
-    delay(100);
-    pwmR.writeMicroseconds(legS, curRval[legS] - pos);
-    delay(100);
+    pwmR.writeMicroseconds(legS + 1, curRval[legS + 1] - hieght);
+    pwmR.writeMicroseconds(legS + 2, curRval[legS + 2] - hieght);
+    delay(steps);
+    pwmR.writeMicroseconds(legS, curRval[legS]);
+    delay(steps);
     pwmR.writeMicroseconds(legS + 1, curRval[legS + 1]);
     pwmR.writeMicroseconds(legS + 2, curRval[legS + 2]);
-    delay(100);
-    pwmR.writeMicroseconds(legS, curRval[legS]);
     // }
   }
 }
@@ -301,10 +330,13 @@ void serialEvent()
   {
     // add it to the inputString:
     Data_In = Serial.readStringUntil('#');
-    if (Data_In == "step")
+    if (Data_In == "stepf")
     {
-      moveLeftLeg(0, 200, 50);
-      moveRightLeg(0, 200, 50);
+      step_forward();
+    }
+    else if (Data_In == "stepb")
+    {
+      step_backward();
     }
     else if (Data_In == "stand")
     {
