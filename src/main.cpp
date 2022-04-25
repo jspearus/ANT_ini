@@ -257,6 +257,23 @@ void moveLeftLeg(int leg, int pos, int steps)
 }
 void moveRightLeg(int leg, int pos, int steps)
 {
+  if (mode != 0)
+  {
+    int Leg[] = {12, 8, 4};
+    int legS = Leg[leg];
+    // for (int i = 1; i < (steps + 1); i++)
+    // {
+    pwmR.writeMicroseconds(legS + 1, curRval[legS + 1] - 200);
+    pwmR.writeMicroseconds(legS + 2, curRval[legS + 2] - 100);
+    delay(100);
+    pwmR.writeMicroseconds(legS, curRval[legS] - pos);
+    delay(100);
+    pwmR.writeMicroseconds(legS + 1, curRval[legS + 1]);
+    pwmR.writeMicroseconds(legS + 2, curRval[legS + 2]);
+    delay(100);
+    pwmR.writeMicroseconds(legS, curRval[legS]);
+    // }
+  }
 }
 
 void printCurPos()
@@ -287,6 +304,7 @@ void serialEvent()
     if (Data_In == "step")
     {
       moveLeftLeg(0, 200, 50);
+      moveRightLeg(0, 200, 50);
     }
     else if (Data_In == "stand")
     {
