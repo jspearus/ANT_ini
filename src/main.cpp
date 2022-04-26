@@ -25,6 +25,7 @@ void center();
 void home();
 void stand();
 void sit();
+void attack();
 void step_forward();
 void step_backward();
 void turn_right();
@@ -100,11 +101,7 @@ void loop()
     }
     else if (dist < 15 && mode == 1)
     {
-      step_forward();
-      moveGrip(130);
-      delay(2000);
-      moveGrip(90);
-      sit();
+      attack();
     }
   }
 }
@@ -226,6 +223,27 @@ void sit()
   }
   printCurPos();
 }
+void attack()
+{
+  moveGrip(80);
+  moveLeftLeg(0, 200, 0, 0);
+  moveRightLeg(0, 200, 0, 0);
+  moveLeftLeg(1, 200, 0, 0);
+  moveRightLeg(1, 200, 0, 0);
+  moveLeftLeg(2, 200, 0, 0);
+  moveRightLeg(2, 200, 0, 0);
+  delay(1000);
+  moveLeftLeg(0, -200, 0, 0);
+  moveRightLeg(0, -200, 0, 0);
+  moveLeftLeg(1, -200, 0, 0);
+  moveRightLeg(1, -200, 0, 0);
+  moveLeftLeg(2, -200, 0, 0);
+  moveRightLeg(2, -200, 0, 0);
+  delay(100);
+  moveGrip(130);
+  delay(500);
+  moveGrip(100);
+}
 
 void step_forward()
 {
@@ -299,7 +317,8 @@ void turn_left()
 }
 
 void moveGrip(int pos)
-{
+{ // 80 - grip open
+  // 130 -  grip closed
   pos = constrain(pos, 80, 130);
   grip.write(pos);
 }
@@ -387,6 +406,10 @@ void serialEvent()
     else if (Data_In == "stand")
     {
       stand();
+    }
+    else if (Data_In == "attack")
+    {
+      attack();
     }
     else if (Data_In == "sit")
     {
