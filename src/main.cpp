@@ -26,6 +26,9 @@ void home();
 void stand();
 void sit();
 void step_forward();
+void step_backward();
+void turn_right();
+void turn_left();
 
 void moveGrip(int pos);
 void moveLeftLeg(int leg, int pos, int hieght, int steps);
@@ -226,8 +229,8 @@ void sit()
 
 void step_forward()
 {
-  moveLeftLeg(1, 200, 200, 100);
-  moveRightLeg(1, 200, 200, 100);
+  moveLeftLeg(1, 200, 200, 70);
+  moveRightLeg(1, 200, 200, 70);
   moveLeftLeg(0, 200, 200, 100);
   moveRightLeg(0, 200, 200, 100);
   delay(100);
@@ -244,8 +247,8 @@ void step_forward()
 
 void step_backward()
 {
-  moveLeftLeg(1, -200, 200, 100);
-  moveRightLeg(1, -200, 200, 100);
+  moveLeftLeg(1, -200, 200, 70);
+  moveRightLeg(1, -200, 200, 70);
   moveLeftLeg(2, -200, 200, 100);
   moveRightLeg(2, -200, 200, 100);
   delay(100);
@@ -258,6 +261,41 @@ void step_backward()
   delay(100);
   moveLeftLeg(0, -200, 200, 100);
   moveRightLeg(0, -200, 200, 100);
+}
+
+void turn_right()
+{
+  moveLeftLeg(1, 200, 200, 70);
+  moveRightLeg(1, -200, 200, 70);
+  moveLeftLeg(0, 200, 200, 100);
+  moveRightLeg(2, -200, 200, 100);
+  delay(100);
+  moveLeftLeg(0, -200, 0, 0);
+  moveRightLeg(0, 200, 0, 0);
+  moveLeftLeg(1, -200, 0, 0);
+  moveRightLeg(1, 200, 0, 0);
+  moveLeftLeg(2, -200, 0, 0);
+  moveRightLeg(2, 200, 0, 0);
+  delay(100);
+  moveLeftLeg(2, 200, 200, 100);
+  moveRightLeg(0, -200, 200, 100);
+}
+void turn_left()
+{
+  moveLeftLeg(1, -200, 200, 70);
+  moveRightLeg(1, 200, 200, 70);
+  moveLeftLeg(0, -200, 200, 100);
+  moveRightLeg(2, 200, 200, 100);
+  delay(100);
+  moveLeftLeg(0, 200, 0, 0);
+  moveRightLeg(0, -200, 0, 0);
+  moveLeftLeg(1, 200, 0, 0);
+  moveRightLeg(1, -200, 0, 0);
+  moveLeftLeg(2, 200, 0, 0);
+  moveRightLeg(2, -200, 0, 0);
+  delay(100);
+  moveLeftLeg(2, -200, 200, 100);
+  moveRightLeg(0, 200, 200, 100);
 }
 
 void moveGrip(int pos)
@@ -337,6 +375,14 @@ void serialEvent()
     else if (Data_In == "stepb")
     {
       step_backward();
+    }
+    else if (Data_In == "stepr")
+    {
+      turn_right();
+    }
+    else if (Data_In == "stepl")
+    {
+      turn_left();
     }
     else if (Data_In == "stand")
     {
