@@ -146,7 +146,7 @@ void home()
     curLval[i] = homeLval[i];
     curRval[i] = homeRval[i];
   }
-  printCurPos();
+  Serial.println("sit,0");
 }
 
 void stand()
@@ -193,7 +193,7 @@ void stand()
     pwmR.writeMicroseconds((i * 4) + 1, curRval[(i * 4) + 1]);
     delay(100);
   }
-  printCurPos();
+  Serial.println("stand,0");
 }
 void sit()
 { // move to sitting position
@@ -221,7 +221,7 @@ void sit()
       pwmR.writeMicroseconds((i * 4) + 2, curRval[(i * 4) + 2]);
     }
   }
-  printCurPos();
+  Serial.println("sit,0");
 }
 void attack()
 {
@@ -387,7 +387,11 @@ void serialEvent()
   {
     // add it to the inputString:
     Data_In = Serial.readStringUntil('#');
-    if (Data_In == "stepf")
+    if (Data_In == "whoRu")
+    {
+      Serial.println("ANT,0");
+    }
+    else if (Data_In == "stepf")
     {
       step_forward();
     }
