@@ -31,7 +31,7 @@ void step_backward();
 void turn_right();
 void turn_left();
 
-void moveGrip(int pos);
+void moveGrip(int pos, int steps);
 void moveLeftLeg(int leg, int pos, int hieght, int steps);
 void moveRightLeg(int leg, int pos, int hieght, int steps);
 
@@ -47,19 +47,21 @@ int rightAnkleStep = 0;
 String Data_In = "";
 
 // Home Servo Positions
-int homeLval[] = {1300, 1300, 0, 0, 1600, 2400, 2300, 0, 1500, 2400, 2300, 0, 1400, 2400, 2300, 0};
-int homeRval[] = {1500, 0, 0, 0, 1600, 600, 700, 0, 1500, 600, 700, 0, 1400, 600, 700, 0};
+int homeLval[] = {1300, 1300, 0, 0, 1600, 2250, 2300, 0, 1500, 2250, 2300, 0, 1400, 2250, 2300, 0};
+int homeRval[] = {1500, 0, 0, 0, 1600, 750, 700, 0, 1500, 750, 700, 0, 1400, 750, 700, 0};
 // Stand Servo Positions
-int standLval[] = {1500, 2000, 2200}; // 1500, 1410, 1950
-int standRval[] = {1500, 1000, 800};  // 1500, 1590, 1050
+int standLval[] = {1500, 1900, 2200}; // 1500, 1410, 1950
+int standRval[] = {1500, 1100, 800};  // 1500, 1590, 1050
 // Sit Servo Positions
-int sitLval[] = {1500, 2400, 2300}; // 1500, 2400, 2400
-int sitRval[] = {1500, 600, 700};   // 1500, 600, 600
+int sitLval[] = {1500, 2250, 2300}; // 1500, 2400, 2400
+int sitRval[] = {1500, 750, 700};   // 1500, 600, 600
 
 // Current Servo Postions
+int gripPos = 90;
 int curLval[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 int curRval[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 // Previous Servo Postion
+int preGripPos = 90;
 int preLval[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 int preRval[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 void setup()
@@ -75,11 +77,11 @@ void setup()
   pwmR.setPWMFreq(SERVO_FREQ); // Analog servos run at ~50 Hz updates
 
   grip.attach(8);
-  moveGrip(80);
+  moveGrip(80, 20);
   delay(200);
-  moveGrip(130);
+  moveGrip(130, 20);
   delay(2000);
-  moveGrip(90);
+  moveGrip(90, 20);
   home();
 }
 
@@ -93,10 +95,6 @@ void loop()
   {
     if (dist < 15 && mode == 0)
     {
-
-      moveGrip(130);
-      delay(2000);
-      moveGrip(90);
       stand();
     }
     else if (dist < 15 && mode == 1)
@@ -120,7 +118,7 @@ void center()
 void home()
 {
   mode = 0;
-  moveGrip(110);                          // grip closed
+  moveGrip(110, 100);                     // grip closed
   pwmL.writeMicroseconds(0, homeLval[0]); // head tilt min 1150 UP - max 1800 Down
   pwmL.writeMicroseconds(1, homeLval[1]); // head roll
   pwmR.writeMicroseconds(0, homeRval[0]); // Tail Pan
@@ -225,7 +223,7 @@ void sit()
 }
 void attack()
 {
-  moveGrip(80);
+  moveGrip(80, 10);
   moveLeftLeg(0, 200, 0, 0);
   moveRightLeg(0, 200, 0, 0);
   moveLeftLeg(1, 200, 0, 0);
@@ -240,9 +238,9 @@ void attack()
   moveLeftLeg(2, -200, 0, 0);
   moveRightLeg(2, -200, 0, 0);
   delay(100);
-  moveGrip(130);
+  moveGrip(130, 1);
   delay(500);
-  moveGrip(100);
+  moveGrip(100, 30);
 }
 
 void step_forward()
@@ -316,11 +314,16 @@ void turn_left()
   moveRightLeg(0, 200, 200, 100);
 }
 
-void moveGrip(int pos)
+void moveGrip(int pos, int steps)
 { // 80 - grip open
   // 130 -  grip closed
   pos = constrain(pos, 80, 130);
-  grip.write(pos);
+  int step = (pos - gripPos) / steps;
+  for (int i = 0; i < steps; i++)
+  {
+    gripPos = gripPos + step;
+    grip.write(gripPos);
+  }
 }
 
 void moveLeftLeg(int leg, int pos, int hieght, int steps)
