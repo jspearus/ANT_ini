@@ -47,14 +47,14 @@ int rightAnkleStep = 0;
 String Data_In = "";
 
 // Home Servo Positions
-int homeLval[] = {1300, 1300, 0, 0, 1600, 2400, 2400, 0, 1500, 2400, 2400, 0, 1400, 2400, 2400, 0};
-int homeRval[] = {1500, 0, 0, 0, 1600, 600, 600, 0, 1500, 600, 600, 0, 1400, 600, 600, 0};
+int homeLval[] = {1300, 1300, 0, 0, 1600, 2400, 2300, 0, 1500, 2400, 2300, 0, 1400, 2400, 2300, 0};
+int homeRval[] = {1500, 0, 0, 0, 1600, 600, 700, 0, 1500, 600, 700, 0, 1400, 600, 700, 0};
 // Stand Servo Positions
-int standLval[] = {1500, 2000, 2300}; // 1500, 1410, 1950
-int standRval[] = {1500, 1000, 700}; // 1500, 1590, 1050
+int standLval[] = {1500, 2000, 2200}; // 1500, 1410, 1950
+int standRval[] = {1500, 1000, 800};  // 1500, 1590, 1050
 // Sit Servo Positions
-int sitLval[] = {1500, 2400, 2400};  //1500, 2400, 2400
-int sitRval[] = {1500, 600, 600};  // 1500, 600, 600
+int sitLval[] = {1500, 2400, 2300}; // 1500, 2400, 2400
+int sitRval[] = {1500, 600, 700};   // 1500, 600, 600
 
 // Current Servo Postions
 int curLval[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
@@ -422,6 +422,10 @@ void serialEvent()
     else if (Data_In == "home")
     {
       home();
+    }
+    else if (Data_In == "center")
+    {
+      center();
     }
     else
     {
