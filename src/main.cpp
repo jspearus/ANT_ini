@@ -427,6 +427,10 @@ void serialEvent()
     {
       center();
     }
+    else if (Data_In == "pos")
+    {
+      printCurPos();
+    }
     else
     {
       Serial.println("unknown command...");
