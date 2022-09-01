@@ -54,9 +54,6 @@ int homeRval[] = {1500, 0, 0, 0, 1600, 750, 750, 0, 1500, 750, 750, 0, 1400, 750
 int standLval[] = {1500, 1700, 2150}; // 1500, 1900, 2200
 int standRval[] = {1500, 1300, 800};  // 1500, 1100, 800
 
-int standLval[] = {1500, 1800, 2300}; // 1500, 1410, 1950
-int standRval[] = {1500, 1200, 700};  // 1500, 1590, 1050
-
 // Sit Servo Positions
 int sitLval[] = {1500, 2200, 2200}; // 1500, 2400, 2400
 int sitRval[] = {1500, 750, 750};   // 1500, 600, 600
@@ -231,94 +228,98 @@ void sit()
 void attack()
 {
   moveGrip(80);
-  moveLeftLeg(0, 200, 0, 0);
-  moveRightLeg(0, 200, 0, 0);
-  moveLeftLeg(1, 200, 0, 0);
-  moveRightLeg(1, 200, 0, 0);
-  moveLeftLeg(2, 200, 0, 0);
-  moveRightLeg(2, 200, 0, 0);
+  moveLeftLeg(0, 200, 0, 1);
+  moveRightLeg(0, 200, 0, 1);
+  moveLeftLeg(1, 200, 0, 1);
+  moveRightLeg(1, 200, 0, 1);
+  moveLeftLeg(2, 200, 0, 1);
+  moveRightLeg(2, 200, 0, 1);
   delay(1000);
-  moveLeftLeg(0, -200, 0, 0);
-  moveRightLeg(0, -200, 0, 0);
-  moveLeftLeg(1, -200, 0, 0);
-  moveRightLeg(1, -200, 0, 0);
-  moveLeftLeg(2, -200, 0, 0);
-  moveRightLeg(2, -200, 0, 0);
+  moveLeftLeg(0, -200, 0, 1);
+  moveRightLeg(0, -200, 0, 1);
+  moveLeftLeg(1, -200, 0, 1);
+  moveRightLeg(1, -200, 0, 1);
+  moveLeftLeg(2, -200, 0, 1);
+  moveRightLeg(2, -200, 0, 1);
   delay(100);
   moveGrip(130);
   delay(500);
-  moveGrip(100);
+  for (int i = 130; i > 100; i = i - 10)
+  {
+    moveGrip(i);
+    delay(50);
+  }
 }
 
 void step_forward()
 {
-  moveLeftLeg(1, 200, 200, 70);   // 200, 200, 70
-  moveRightLeg(1, 200, 200, 70);  // 200, 200, 70
-  moveLeftLeg(0, 200, 200, 100);  // 200, 200, 100
-  moveRightLeg(0, 200, 200, 100); // 200, 200, 100
+  moveLeftLeg(1, 200, 200, 10);  // 200, 200, 70
+  moveRightLeg(1, 200, 200, 10); // 200, 200, 70
+  moveLeftLeg(0, 200, 200, 10);  // 200, 200, 100
+  moveRightLeg(0, 200, 200, 10); // 200, 200, 100
   delay(100);
-  moveLeftLeg(0, -200, 0, 0);  // -200, 0, 0
-  moveRightLeg(0, -200, 0, 0); // -200, 0, 0
-  moveLeftLeg(1, -200, 0, 0);  // -200, 0, 0
-  moveRightLeg(1, -200, 0, 0); // -200, 0, 0
-  moveLeftLeg(2, -200, 0, 0);  // -200, 0, 0
-  moveRightLeg(2, -200, 0, 0); // -200, 0, 0
+  moveLeftLeg(0, -200, 0, 1);  // -200, 0, 0
+  moveRightLeg(0, -200, 0, 1); // -200, 0, 0
+  moveLeftLeg(1, -200, 0, 1);  // -200, 0, 0
+  moveRightLeg(1, -200, 0, 1); // -200, 0, 0
+  moveLeftLeg(2, -200, 0, 1);  // -200, 0, 0
+  moveRightLeg(2, -200, 0, 1); // -200, 0, 0
   delay(100);
-  moveLeftLeg(2, 200, 200, 100);  // 200, 200, 100
-  moveRightLeg(2, 200, 200, 100); // 200, 200, 100
+  moveLeftLeg(2, 200, 200, 10);  // 200, 200, 100
+  moveRightLeg(2, 200, 200, 10); // 200, 200, 100
 }
 
 void step_backward()
 {
-  moveLeftLeg(1, -200, 200, 70);
-  moveRightLeg(1, -200, 200, 70);
-  moveLeftLeg(2, -200, 200, 100);
-  moveRightLeg(2, -200, 200, 100);
+  moveLeftLeg(1, -200, 200, 10);
+  moveRightLeg(1, -200, 200, 10);
+  moveLeftLeg(2, -200, 200, 10);
+  moveRightLeg(2, -200, 200, 10);
   delay(100);
-  moveLeftLeg(0, 200, 0, 0);
-  moveRightLeg(0, 200, 0, 0);
-  moveLeftLeg(1, 200, 0, 0);
-  moveRightLeg(1, 200, 0, 0);
-  moveLeftLeg(2, 200, 0, 0);
-  moveRightLeg(2, 200, 0, 0);
+  moveLeftLeg(0, 200, 0, 1);
+  moveRightLeg(0, 200, 0, 1);
+  moveLeftLeg(1, 200, 0, 1);
+  moveRightLeg(1, 200, 0, 1);
+  moveLeftLeg(2, 200, 0, 1);
+  moveRightLeg(2, 200, 0, 1);
   delay(100);
-  moveLeftLeg(0, -200, 200, 100);
-  moveRightLeg(0, -200, 200, 100);
+  moveLeftLeg(0, -200, 200, 10);
+  moveRightLeg(0, -200, 200, 10);
 }
 
 void turn_right()
 {
-  moveLeftLeg(1, 200, 200, 70);    // 200, 200, 70
-  moveRightLeg(1, -200, 200, 70);  //-200, 200, 70
-  moveLeftLeg(0, 200, 200, 100);   // 200, 200, 100
-  moveRightLeg(2, -200, 200, 100); //-200, 200, 100
+  moveLeftLeg(1, 200, 200, 10);   // 200, 200, 70
+  moveRightLeg(1, -200, 200, 10); //-200, 200, 70
+  moveLeftLeg(0, 200, 200, 10);   // 200, 200, 100
+  moveRightLeg(2, -200, 200, 10); //-200, 200, 100
   delay(100);
-  moveLeftLeg(0, -200, 0, 0); //-200, 0, 0
-  moveRightLeg(0, 200, 0, 0); // 200, 0, 0
-  moveLeftLeg(1, -200, 0, 0); //-200, 0, 0
-  moveRightLeg(1, 200, 0, 0); // 200, 0, 0
-  moveLeftLeg(2, -200, 0, 0); //-200, 0, 0
-  moveRightLeg(2, 200, 0, 0); // 200, 0, 0
+  moveLeftLeg(0, -200, 0, 1); //-200, 0, 0
+  moveRightLeg(0, 200, 0, 1); // 200, 0, 0
+  moveLeftLeg(1, -200, 0, 1); //-200, 0, 0
+  moveRightLeg(1, 200, 0, 1); // 200, 0, 0
+  moveLeftLeg(2, -200, 0, 1); //-200, 0, 0
+  moveRightLeg(2, 200, 0, 1); // 200, 0, 0
   delay(100);
-  moveLeftLeg(2, 200, 200, 100);   // 200, 200, 100
-  moveRightLeg(0, -200, 200, 100); //-200, 200, 100
+  moveLeftLeg(2, 200, 200, 10);   // 200, 200, 100
+  moveRightLeg(0, -200, 200, 10); //-200, 200, 100
 }
 void turn_left()
 {
-  moveLeftLeg(1, -200, 200, 70);
-  moveRightLeg(1, 200, 200, 70);
-  moveLeftLeg(0, -200, 200, 100);
-  moveRightLeg(2, 200, 200, 100);
+  moveLeftLeg(1, -200, 200, 10);
+  moveRightLeg(1, 200, 200, 10);
+  moveLeftLeg(0, -200, 200, 10);
+  moveRightLeg(2, 200, 200, 10);
   delay(100);
-  moveLeftLeg(0, 200, 0, 0);
-  moveRightLeg(0, -200, 0, 0);
-  moveLeftLeg(1, 200, 0, 0);
-  moveRightLeg(1, -200, 0, 0);
-  moveLeftLeg(2, 200, 0, 0);
-  moveRightLeg(2, -200, 0, 0);
+  moveLeftLeg(0, 200, 0, 1);
+  moveRightLeg(0, -200, 0, 1);
+  moveLeftLeg(1, 200, 0, 1);
+  moveRightLeg(1, -200, 0, 1);
+  moveLeftLeg(2, 200, 0, 1);
+  moveRightLeg(2, -200, 0, 1);
   delay(100);
-  moveLeftLeg(2, -200, 200, 100);
-  moveRightLeg(0, 200, 200, 100);
+  moveLeftLeg(2, -200, 200, 10);
+  moveRightLeg(0, 200, 200, 10);
 }
 
 void moveGrip(int pos)
@@ -335,16 +336,16 @@ void moveLeftLeg(int leg, int pos, int hieght, int steps)
     int Leg[] = {4, 8, 12};
     int legS = Leg[leg];
     curLval[legS] = curLval[legS] + pos;
-    // for (int i = 1; i < (steps + 1); i++)
-    // {
-    pwmL.writeMicroseconds(legS + 1, curLval[legS + 1] + hieght);
-    pwmL.writeMicroseconds(legS + 2, curLval[legS + 2] + hieght);
-    delay(steps);
-    pwmL.writeMicroseconds(legS, curLval[legS]);
-    delay(steps);
-    pwmL.writeMicroseconds(legS + 1, curLval[legS + 1]);
-    pwmL.writeMicroseconds(legS + 2, curLval[legS + 2]);
-    // }
+    for (int i = 1; i < (steps + 1); i++)
+    {
+      pwmL.writeMicroseconds(legS + 1, curLval[legS + 1] + hieght);
+      pwmL.writeMicroseconds(legS + 2, curLval[legS + 2] + hieght);
+      delay(steps);
+      pwmL.writeMicroseconds(legS, curLval[legS]);
+      delay(steps);
+      pwmL.writeMicroseconds(legS + 1, curLval[legS + 1]);
+      pwmL.writeMicroseconds(legS + 2, curLval[legS + 2]);
+    }
   }
 }
 void moveRightLeg(int leg, int pos, int hieght, int steps)
@@ -354,19 +355,24 @@ void moveRightLeg(int leg, int pos, int hieght, int steps)
     int Leg[] = {12, 8, 4};
     int legS = Leg[leg];
     curRval[legS] = curRval[legS] - pos;
-    // for (int i = 1; i < (steps + 1); i++)
-    // {
-    pwmR.writeMicroseconds(legS + 1, curRval[legS + 1] - hieght);
-    pwmR.writeMicroseconds(legS + 2, curRval[legS + 2] - hieght);
-    delay(steps);
-    pwmR.writeMicroseconds(legS, curRval[legS]);
-    delay(steps);
-    pwmR.writeMicroseconds(legS + 1, curRval[legS + 1]);
-    pwmR.writeMicroseconds(legS + 2, curRval[legS + 2]);
-    // }
+    for (int i = 1; i < (steps + 1); i++)
+    {
+      pwmR.writeMicroseconds(legS + 1, curRval[legS + 1] - hieght);
+      pwmR.writeMicroseconds(legS + 2, curRval[legS + 2] - hieght);
+      delay(steps);
+      pwmR.writeMicroseconds(legS, curRval[legS]);
+      delay(steps);
+      pwmR.writeMicroseconds(legS + 1, curRval[legS + 1]);
+      pwmR.writeMicroseconds(legS + 2, curRval[legS + 2]);
+    }
   }
 }
-
+void newMoveRightLeg(int leg, int pos, int hieght, int steps)
+{
+  if (mode != 0)
+  {
+  }
+}
 void printCurPos()
 {
   Serial.print("Left: ");
