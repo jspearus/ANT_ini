@@ -50,8 +50,9 @@ String Data_In = "";
 int homeLval[] = {1300, 1300, 0, 0, 1600, 2250, 2300, 0, 1500, 2250, 2300, 0, 1400, 2250, 2300, 0};
 int homeRval[] = {1500, 0, 0, 0, 1600, 750, 700, 0, 1500, 750, 700, 0, 1400, 750, 700, 0};
 // Stand Servo Positions
-int standLval[] = {1500, 1900, 2200}; // 1500, 1410, 1950
-int standRval[] = {1500, 1100, 800};  // 1500, 1590, 1050
+// todo make unique for each leg
+int standLval[] = {1500, 1700, 2150}; // 1500, 1900, 2200
+int standRval[] = {1500, 1300, 800};  // 1500, 1100, 800
 // Sit Servo Positions
 int sitLval[] = {1500, 2250, 2300}; // 1500, 2400, 2400
 int sitRval[] = {1500, 750, 700};   // 1500, 600, 600
@@ -245,20 +246,20 @@ void attack()
 
 void step_forward()
 {
-  moveLeftLeg(1, 200, 200, 70);
-  moveRightLeg(1, 200, 200, 70);
-  moveLeftLeg(0, 200, 200, 100);
-  moveRightLeg(0, 200, 200, 100);
+  moveLeftLeg(1, 200, 200, 70);   // 200, 200, 70
+  moveRightLeg(1, 200, 200, 70);  // 200, 200, 70
+  moveLeftLeg(0, 200, 200, 100);  // 200, 200, 100
+  moveRightLeg(0, 200, 200, 100); // 200, 200, 100
   delay(100);
-  moveLeftLeg(0, -200, 0, 0);
-  moveRightLeg(0, -200, 0, 0);
-  moveLeftLeg(1, -200, 0, 0);
-  moveRightLeg(1, -200, 0, 0);
-  moveLeftLeg(2, -200, 0, 0);
-  moveRightLeg(2, -200, 0, 0);
+  moveLeftLeg(0, -200, 0, 0);  // -200, 0, 0
+  moveRightLeg(0, -200, 0, 0); // -200, 0, 0
+  moveLeftLeg(1, -200, 0, 0);  // -200, 0, 0
+  moveRightLeg(1, -200, 0, 0); // -200, 0, 0
+  moveLeftLeg(2, -200, 0, 0);  // -200, 0, 0
+  moveRightLeg(2, -200, 0, 0); // -200, 0, 0
   delay(100);
-  moveLeftLeg(2, 200, 200, 100);
-  moveRightLeg(2, 200, 200, 100);
+  moveLeftLeg(2, 200, 200, 100);  // 200, 200, 100
+  moveRightLeg(2, 200, 200, 100); // 200, 200, 100
 }
 
 void step_backward()
@@ -281,20 +282,20 @@ void step_backward()
 
 void turn_right()
 {
-  moveLeftLeg(1, 200, 200, 70);
-  moveRightLeg(1, -200, 200, 70);
-  moveLeftLeg(0, 200, 200, 100);
-  moveRightLeg(2, -200, 200, 100);
+  moveLeftLeg(1, 200, 200, 70);    // 200, 200, 70
+  moveRightLeg(1, -200, 200, 70);  //-200, 200, 70
+  moveLeftLeg(0, 200, 200, 100);   // 200, 200, 100
+  moveRightLeg(2, -200, 200, 100); //-200, 200, 100
   delay(100);
-  moveLeftLeg(0, -200, 0, 0);
-  moveRightLeg(0, 200, 0, 0);
-  moveLeftLeg(1, -200, 0, 0);
-  moveRightLeg(1, 200, 0, 0);
-  moveLeftLeg(2, -200, 0, 0);
-  moveRightLeg(2, 200, 0, 0);
+  moveLeftLeg(0, -200, 0, 0); //-200, 0, 0
+  moveRightLeg(0, 200, 0, 0); // 200, 0, 0
+  moveLeftLeg(1, -200, 0, 0); //-200, 0, 0
+  moveRightLeg(1, 200, 0, 0); // 200, 0, 0
+  moveLeftLeg(2, -200, 0, 0); //-200, 0, 0
+  moveRightLeg(2, 200, 0, 0); // 200, 0, 0
   delay(100);
-  moveLeftLeg(2, 200, 200, 100);
-  moveRightLeg(0, -200, 200, 100);
+  moveLeftLeg(2, 200, 200, 100);   // 200, 200, 100
+  moveRightLeg(0, -200, 200, 100); //-200, 200, 100
 }
 void turn_left()
 {
