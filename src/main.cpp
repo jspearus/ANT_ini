@@ -3,6 +3,7 @@
 #include <Adafruit_PWMServoDriver.h>
 #include <HCSR04.h>
 #include <PWMServo.h>
+#include <Kinematics.h>
 
 PWMServo grip; // create servo object to control a servo
 // twelve servo objects can be created on most boards
@@ -54,8 +55,8 @@ int homeRval[] = {1500, 0, 0, 0, 1600, 750, 750, 0, 1500, 750, 750, 0, 1400, 750
 int standLval[] = {1500, 1700, 2150}; // 1500, 1900, 2200
 int standRval[] = {1500, 1300, 800};  // 1500, 1100, 800
 
-int standLval[] = {1500, 1800, 2300}; // 1500, 1410, 1950
-int standRval[] = {1500, 1200, 700};  // 1500, 1590, 1050
+// int standLval[] = {1500, 1800, 2300}; // 1500, 1410, 1950
+// int standRval[] = {1500, 1200, 700};  // 1500, 1590, 1050
 
 // Sit Servo Positions
 int sitLval[] = {1500, 2200, 2200}; // 1500, 2400, 2400
